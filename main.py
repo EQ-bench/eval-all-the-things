@@ -1,7 +1,7 @@
 # main.py
 
 import os
-from src.benchmark import run_benchmarks, handle_results
+from src.benchmark import handle_results
 from src.lm_eval import run_lm_eval_benchmarks
 from src.eq_bench import run_eq_bench_benchmarks, configure_eq_bench
 
