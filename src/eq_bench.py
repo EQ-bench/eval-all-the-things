@@ -32,16 +32,16 @@ def configure_eq_bench():
 	#	for key, value in options.items():
 	#		config.set(section, key, value)
 
-	# Retrieve benchmark run  details from environment variables
-	run_id = '1' #os.environ["RUN_ID"]
-	instruction_template = os.environ.get(["INSTRUCTION_TEMPLATE"], "")
-	model_path = os.environ.get(["MODEL_PATH"], "")
-	lora_path = os.environ.get(["LORA_PATH"],"")
-	quantization = os.environ.get(["QUANTIZATION"],"")
+	# Retrieve benchmark run details from environment variables
+	run_id = '1'  # os.environ["RUN_ID"]
+	instruction_template = os.environ.get("INSTRUCTION_TEMPLATE", "")
+	model_path = os.environ.get("MODEL_PATH", "")
+	lora_path = os.environ.get("LORA_PATH", "")
+	quantization = os.environ.get("QUANTIZATION", "")
 	n_iterations = os.environ["N_ITERATIONS"]
 	inference_engine = os.environ["INFERENCE_ENGINE"]
-	ooba_params = os.environ.get(["OOBA_PARAMS"],"")
-	downloader_filters = os.environ.get(["DOWNLOADER_FILTERS"],"")
+	ooba_params = os.environ.get("OOBA_PARAMS", "")
+	downloader_filters = os.environ.get("DOWNLOADER_FILTERS", "")
 
 	# Update the benchmark run configuration
 	benchmark_run = f"{run_id}, {instruction_template}, {model_path}, {lora_path}, {quantization}, {n_iterations}, {inference_engine}, {ooba_params}, {downloader_filters}"	
