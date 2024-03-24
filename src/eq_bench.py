@@ -59,31 +59,35 @@ def run_eq_bench_benchmarks(benchmarks, model_id):
 	# Configure eq-bench
 	configure_eq_bench()
 
+	# Change to the EQ-Bench directory
+	os.chdir("EQ-Bench")
+
 	results = {
 		"model_id": model_id,
-		"eq_bench_results": {
-			'raw_results.json': None,
-			'benchmark_results.csv': None
-		},
+		"eq_bench_results": {},
 		"eq_bench_output": ""
 	}
 
 	# Run selected eq-bench benchmarks
 	for benchmark in benchmarks:
-		command = f"python EQ-Bench/eq-bench.py --benchmarks {benchmark}"
+		command = f"python eq-bench.py --benchmarks {benchmark}"
 		output = subprocess.check_output(command, shell=True).decode("utf-8")
 		results["eq_bench_output"] += f"\n\n=== {benchmark} ===\n{output}"
 
 	# Parse eq-bench results
 	try:
-		with open("EQ-Bench/raw_results.json", "r") as f:
-			results["eq_bench_results"]['raw_results.json'] = json.load(f)
+		with open("raw_results.json", "r") as f:
+			results["eq_bench_results"]["raw_results.json"] = json.load(f)
 	except Exception as e:
 		print(e)
+
 	try:
-		with open("EQ-Bench/benchmark_results.csv", "r") as f:
-			results["eq_bench_results"]['benchmark_results.csv'] = json.load(f)
+		with open("benchmark_results.csv", "r") as f:
+			results["eq_bench_results"]["benchmark_results.csv"] = f.read()
 	except Exception as e:
 		print(e)
+
+	# Change back to the parent directory
+	os.chdir("..")
 
 	return results
