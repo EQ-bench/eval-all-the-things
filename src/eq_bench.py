@@ -11,8 +11,7 @@ def install_eq_bench_dependencies():
 		"cd EQ-Bench",
 		"./ooba_quick_install.sh"
 	]
-	for command in commands:
-		subprocess.run(command, shell=True, check=True)
+	subprocess.run(' && '.join(commands), shell=True, check=True)
 
 	# Save Firebase credentials if provided
 	firebase_creds = os.environ.get("FIREBASE_CREDS")

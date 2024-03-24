@@ -14,9 +14,8 @@ def install_lm_eval_dependencies():
 		"pip install gekko sentencepiece hf_transfer einops optimum accelerate bitsandbytes tiktoken flash_attn transformers_stream_generator",
 		"export HF_HUB_ENABLE_HF_TRANSFER=1",
 		"export NUMEXPR_MAX_THREADS=64"
-	]
-	for command in commands:
-		subprocess.run(command, shell=True, check=True)
+	]	
+	subprocess.run(' && '.join(commands), shell=True, check=True)
 
 def run_lm_eval_benchmarks(model_id: str, tasks: List[str], quantization: str, batch_size: str, trust_remote_code: bool, hf_api_token: str, log_samples: bool):
 	"""Run lm-eval benchmarks."""
