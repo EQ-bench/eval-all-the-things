@@ -32,7 +32,7 @@ def main():
 	# Run benchmarks	
 
 	if any(benchmark in eq_bench_benchmarks_to_run for benchmark in ["eq-bench", "creative-writing", "judgemark"]):
-		results["eq_bench_results"] = run_eq_bench_benchmarks(eq_bench_benchmarks_to_run, model_id, trust_remote_code)
+		results["eq_bench_results"] = run_eq_bench_benchmarks(eq_bench_benchmarks_to_run, model_id)
 	
 	
 	if lm_eval_tasks:
