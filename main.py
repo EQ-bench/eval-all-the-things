@@ -1,9 +1,8 @@
 import os
 import json
-from src.benchmark import handle_results
 from src.lm_eval import run_lm_eval_benchmarks
 from src.eq_bench import run_eq_bench_benchmarks, configure_eq_bench
-from .upload import upload_to_github_gist
+from src.upload import upload_to_github_gist
 
 def main():
 	# Retrieve environment variables
