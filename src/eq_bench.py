@@ -15,7 +15,7 @@ def install_eq_bench_dependencies():
 	firebase_creds = os.environ.get("FIREBASE_CREDS")
 	if firebase_creds:
 		with open("EQ-Bench/firebase_creds.json", "w") as f:
-			f.write(firebase_creds)
+			f.write(firebase_creds.replace('\\"', '"'))
 
 def configure_eq_bench():
 	config = configparser.ConfigParser(allow_no_value=True)
