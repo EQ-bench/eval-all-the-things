@@ -7,9 +7,10 @@ import json
 def install_eq_bench_dependencies():
 	"""Install eq-bench dependencies."""
 	commands = [
-		"git clone https://github.com/EQ-bench/EQ-Bench.git",
-		"cd EQ-Bench",
-		"./ooba_quick_install.sh"
+		'REPO_DIR="EQ-Bench"; if [ -d "$REPO_DIR" ]; then cd "$REPO_DIR" && git pull; else git clone https://github.com/EQ-bench/EQ-Bench.git"; cd "$REPO_DIR"; fi; ./ooba_quick_install.sh'
+		#"git clone https://github.com/EQ-bench/EQ-Bench.git",
+		#"cd EQ-Bench",
+		#"./ooba_quick_install.sh"
 	]
 	subprocess.run(' && '.join(commands), shell=True, check=True)
 
