@@ -25,7 +25,7 @@ def configure_eq_bench():
 	with open("EQ-Bench/config.cfg", "r") as config_file:
 		config.read_file(config_file)
 
-	config.set('Ooobabooga config', 'ooba_launch_script', '~/text-generation-webui/start_linux.sh')
+	config.set('Oobabooga config', 'ooba_launch_script', '~/text-generation-webui/start_linux.sh')
 
 	# Update the configuration based on the provided options
 	#for section, options in eq_bench_options.items():
