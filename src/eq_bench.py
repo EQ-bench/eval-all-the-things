@@ -17,7 +17,7 @@ def install_eq_bench_dependencies():
 		with open("EQ-Bench/firebase_creds.json", "w") as f:
 			f.write(firebase_creds)
 
-def configure_eq_bench(eq_bench_options):
+def configure_eq_bench():
 	config = configparser.ConfigParser(allow_no_value=True)
 	config.optionxform = str  # Preserve case sensitivity of keys
 
@@ -25,12 +25,14 @@ def configure_eq_bench(eq_bench_options):
 	with open("EQ-Bench/config.cfg", "r") as config_file:
 		config.read_file(config_file)
 
-	# Update the configuration based on the provided options
-	for section, options in eq_bench_options.items():
-		for key, value in options.items():
-			config.set(section, key, value)
+	config.set('Ooobabooga config', 'ooba_launch_script', '~/text-generation-webui/start_linux.sh')
 
-	# Retrieve benchmark run details from environment variables
+	# Update the configuration based on the provided options
+	#for section, options in eq_bench_options.items():
+	#	for key, value in options.items():
+	#		config.set(section, key, value)
+
+	# Retrieve benchmark run  details from environment variables
 	run_id = os.environ["RUN_ID"]
 	instruction_template = os.environ["INSTRUCTION_TEMPLATE"]
 	model_path = os.environ["MODEL_PATH"]
@@ -55,7 +57,7 @@ def run_eq_bench_benchmarks(benchmarks, model_id):
 	install_eq_bench_dependencies()
 
 	# Configure eq-bench
-	configure_eq_bench(benchmarks)
+	configure_eq_bench()
 
 	results = {
 		"model_id": model_id,
