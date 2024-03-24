@@ -1,5 +1,9 @@
 #!/bin/bash
 
+apt update -y
+
+apt install nano screen htop -y
+
 # Create a new screen session
 screen -dmS benchmark_session
 
