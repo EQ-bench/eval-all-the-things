@@ -1,9 +1,9 @@
 import os
 import json
-from src.benchmark import run_benchmarks, handle_results
+from src.benchmark import handle_results
 from src.lm_eval import run_lm_eval_benchmarks
 from src.eq_bench import run_eq_bench_benchmarks, configure_eq_bench
-from src.upload import upload_to_gist
+from .upload import upload_to_github_gist
 
 def main():
 	# Retrieve environment variables
@@ -51,8 +51,10 @@ def main():
 	with open(results_file, "w") as f:
 		json.dump(results, f, indent=2)
 
+
+	upload_to_github_gist(results_file, f"{sanitized_model_id}___EATT.json")
 	# Handle results
-	handle_results(results_file, github_api_token)
+	#handle_results(results_file, github_api_token)
 
 	"""
 	# Upload results to Gist
