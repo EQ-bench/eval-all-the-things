@@ -1,19 +1,24 @@
-from .utils import run_command
 import configparser
 import io
 import os
 import subprocess
 import json
 
-def install_eq_bench_dependencies(pod):
-	"""Install eq-bench dependencies on the RunPod instance."""
+def install_eq_bench_dependencies():
+	"""Install eq-bench dependencies."""
 	commands = [
 		"git clone https://github.com/EQ-bench/EQ-Bench.git",
 		"cd EQ-Bench",
 		"./ooba_quick_install.sh"
 	]
 	for command in commands:
-		run_command(pod, command)
+		subprocess.run(command, shell=True, check=True)
+
+	# Save Firebase credentials if provided
+	firebase_creds = os.environ.get("FIREBASE_CREDS")
+	if firebase_creds:
+		with open("EQ-Bench/firebase_creds.json", "w") as f:
+			f.write(firebase_creds)
 
 def configure_eq_bench(eq_bench_options):
 	config = configparser.ConfigParser(allow_no_value=True)

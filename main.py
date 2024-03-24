@@ -20,20 +20,14 @@ def main():
 	lm_eval_log_samples = os.environ.get("LM_EVAL_LOG_SAMPLES", "False").lower() == "true"
 	
 	
-	if eq_bench_benchmarks_to_run:
-		configure_eq_bench(eq_bench_benchmarks_to_run)
+	#if eq_bench_benchmarks_to_run:
+		#configure_eq_bench(eq_bench_benchmarks_to_run)
 
 	results = {
         "model_id": model_id,
         "lm_eval_results": None,
         "eq_bench_results": None
     }
-
-	# Save Firebase credentials if provided
-	firebase_creds = os.environ.get("FIREBASE_CREDS")
-	if firebase_creds:
-		with open("EQ-Bench/firebase_creds.json", "w") as f:
-			f.write(firebase_creds)
 	
 	# Run benchmarks	
 

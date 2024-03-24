@@ -1,10 +1,4 @@
-import subprocess
 import configparser
-import io
-
-def run_command(pod, command: str) -> str:
-	"""Run a command on the RunPod instance."""
-	return pod.run_command(command).output
 
 def parse_config(config_path: str) -> configparser.ConfigParser:
 	"""Parse a configuration file."""

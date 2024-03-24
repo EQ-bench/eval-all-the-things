@@ -1,7 +1,6 @@
 import os
 import subprocess
 from typing import List
-from .utils import run_command
 import json
 
 def install_lm_eval_dependencies():
@@ -17,7 +16,7 @@ def install_lm_eval_dependencies():
 		"export NUMEXPR_MAX_THREADS=64"
 	]
 	for command in commands:
-		run_command(command)
+		subprocess.run(command, shell=True, check=True)
 
 def run_lm_eval_benchmarks(model_id: str, tasks: List[str], quantization: str, batch_size: str, trust_remote_code: bool, hf_api_token: str, log_samples: bool):
 	"""Run lm-eval benchmarks."""
