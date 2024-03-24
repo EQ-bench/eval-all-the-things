@@ -33,7 +33,7 @@ def configure_eq_bench():
 	#		config.set(section, key, value)
 
 	# Retrieve benchmark run  details from environment variables
-	run_id = os.environ["RUN_ID"]
+	run_id = '1' #os.environ["RUN_ID"]
 	instruction_template = os.environ["INSTRUCTION_TEMPLATE"]
 	model_path = os.environ["MODEL_PATH"]
 	lora_path = os.environ["LORA_PATH"]

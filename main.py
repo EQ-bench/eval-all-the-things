@@ -10,7 +10,7 @@ def main():
 	eq_bench_benchmarks_to_run = [benchmark for benchmark in eq_bench_benchmarks_to_run if benchmark]
 	
 	lm_eval_tasks = os.environ["LM_EVAL_TASKS"].split(",")
-	model_id = os.environ["MODEL_ID"]
+	model_id = os.environ["MODEL_PATH"]
 	trust_remote_code = os.environ["TRUST_REMOTE_CODE"] == "True"
 	debug_mode = os.environ["DEBUG"] == "True"
 	github_api_token = os.environ["GITHUB_API_TOKEN"]
