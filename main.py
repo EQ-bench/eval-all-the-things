@@ -33,10 +33,12 @@ def main():
 
 	if any(benchmark in eq_bench_benchmarks_to_run for benchmark in ["eq-bench", "creative-writing", "judgemark"]):
 		results["eq_bench_results"] = run_eq_bench_benchmarks(eq_bench_benchmarks_to_run, model_id)
+		print('EQ-Bench Completed.')
 	
 	
 	if lm_eval_tasks:
 		results["lm_eval_results"] = run_lm_eval_benchmarks(model_id, lm_eval_tasks, lm_eval_quantization, lm_eval_batch_size, trust_remote_code, hf_api_token, lm_eval_log_samples)
+		print('LM-Eval Completed.')
 	
 	# Save the collated results to a JSON file
 	sanitized_model_id = model_id.replace("/", "__")
@@ -44,26 +46,11 @@ def main():
 	with open(results_file, "w") as f:
 		json.dump(results, f, indent=2)
 
-
-	upload_to_github_gist(results, f"{sanitized_model_id}___EATT.json")
-	# Handle results
-	#handle_results(results_file, github_api_token)
-
-	"""
-	# Upload results to Gist
-	model_id = os.environ["MODEL_ID"]
-	model_id_sanitized = model_id.replace("/", "__")
-
-	# Rename and upload raw_results.json
-	raw_results_filename = f"{model_id_sanitized}___eq-bench___raw_results.json"
-	os.rename("EQ-Bench/raw_results.json", raw_results_filename)
-	upload_to_gist(raw_results_filename, github_api_token)
-
-	# Rename and upload benchmark_results.csv
-	benchmark_results_filename = f"{model_id_sanitized}___eq-bench___benchmark_results.csv"
-	os.rename("EQ-Bench/benchmark_results.csv", benchmark_results_filename)
-	upload_to_gist(benchmark_results_filename, github_api_token)
-	"""
+	upload_to_github_gist(json.dumps(results), f"{sanitized_model_id}___EATT.json")
+	print('Uploaded results to Gist.')
+	print('--------------------')
+	print('Benchmarks complete!')
+	print('--------------------')
 
 if __name__ == "__main__":
 	main()

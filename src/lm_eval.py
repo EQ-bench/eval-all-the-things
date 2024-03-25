@@ -66,7 +66,7 @@ def run_lm_eval_benchmarks(model_id: str, tasks: List[str], quantization: str, b
 	}
 
 	# Parse the overall results JSON file
-	results_file = os.path.join(output_dir, "results.json")
+	results_file = os.path.join(output_dir, "lm_eval_results.json")
 	if os.path.exists(results_file):
 		with open(results_file, "r") as f:
 			results["lm_eval_results"] = json.load(f)
