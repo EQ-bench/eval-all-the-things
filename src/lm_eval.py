@@ -46,7 +46,7 @@ def run_lm_eval_benchmarks(model_id: str, tasks: List[str], quantization: str, b
 
 	# Retry logic
 	current_batch_size = batch_size if batch_size else 'auto:9'
-	output_file_count = run_benchmark(current_batch_size)
+	output = run_benchmark(current_batch_size)
 
 	results_files = [f for f in os.listdir(output_dir) if f.endswith("results.json")]
 

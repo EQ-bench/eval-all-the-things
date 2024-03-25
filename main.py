@@ -45,7 +45,7 @@ def main():
 		json.dump(results, f, indent=2)
 
 
-	upload_to_github_gist(results_file, f"{sanitized_model_id}___EATT.json")
+	upload_to_github_gist(results, f"{sanitized_model_id}___EATT.json")
 	# Handle results
 	#handle_results(results_file, github_api_token)
 

@@ -74,8 +74,21 @@ def run_eq_bench_benchmarks(benchmarks, model_id):
 	# Run selected eq-bench benchmarks
 	for benchmark in benchmarks:
 		command = f"python eq-bench.py --benchmarks {benchmark}"
-		output = subprocess.check_output(command, shell=True).decode("utf-8")
-		results["eq_bench_output"] += f"\n\n=== {benchmark} ===\n{output}"
+		# Start the subprocess and get its output stream
+		process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True, text=True)
+		
+		print(f"\n\n=== {benchmark} ===")  # Display benchmark header
+		results["eq_bench_output"] += f"\n\n=== {benchmark} ===\n"  # Save benchmark header
+		
+		# Read the output line by line as it becomes available
+		for line in iter(process.stdout.readline, ''):
+			print(line, end='')  # Display output line without adding extra newline
+			results["eq_bench_output"] += line  # Save output line
+
+		process.stdout.close()
+		return_code = process.wait()
+		if return_code:
+			raise subprocess.CalledProcessError(return_code, command)
 
 	# Parse eq-bench results
 	try:
