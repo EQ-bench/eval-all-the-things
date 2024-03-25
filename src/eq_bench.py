@@ -6,9 +6,14 @@ import json
 
 def install_eq_bench_dependencies():
 	"""Install eq-bench dependencies."""
-	commands = [
-		'REPO_DIR="EQ-Bench"; if [ -d "$REPO_DIR" ]; then cd "$REPO_DIR" && git pull; else git clone https://github.com/EQ-bench/EQ-Bench.git; cd "$REPO_DIR"; fi; ./ooba_quick_install.sh'
-	]
+	if os.environ["INFERENCE_ENGINE"] == 'ooba':
+		commands = [
+			'REPO_DIR="EQ-Bench"; if [ -d "$REPO_DIR" ]; then cd "$REPO_DIR" && git pull; else git clone https://github.com/EQ-bench/EQ-Bench.git; cd "$REPO_DIR"; fi; ./ooba_quick_install.sh'
+		]
+	else:
+		commands = [
+			'REPO_DIR="EQ-Bench"; if [ -d "$REPO_DIR" ]; then cd "$REPO_DIR" && git pull; else git clone https://github.com/EQ-bench/EQ-Bench.git; cd "$REPO_DIR"; fi; ./install_reqs.sh'
+		]
 	subprocess.run(' && '.join(commands), shell=True, check=True)
 
 	# Save Firebase credentials if provided
@@ -28,7 +33,10 @@ def configure_eq_bench():
 	with open("EQ-Bench/config.cfg", "r") as config_file:
 		config.read_file(config_file)
 
-	config.set('Oobabooga config', 'ooba_launch_script', '~/text-generation-webui/start_linux.sh')
+	if os.environ["INFERENCE_ENGINE"] == 'ooba':
+		config.set('Oobabooga config', 'ooba_launch_script', '~/text-generation-webui/start_linux.sh')
+	else:
+		config.set('Oobabooga config', 'automatically_launch_ooba', 'false')
 
 	# Update the configuration based on the provided options
 	#for section, options in eq_bench_options.items():
