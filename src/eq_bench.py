@@ -12,10 +12,14 @@ def install_eq_bench_dependencies():
 	subprocess.run(' && '.join(commands), shell=True, check=True)
 
 	# Save Firebase credentials if provided
-	firebase_creds = os.environ.get("FIREBASE_CREDS")
-	if firebase_creds:
+	firebase_creds_env = os.environ.get("FIREBASE_CREDS")
+	if firebase_creds_env:
+		# Parse the string back to a JSON object to handle the double-escaped newlines correctly
+		firebase_creds = json.loads(firebase_creds_env)
+
+		# Write the JSON object to a file
 		with open("EQ-Bench/firebase_creds.json", "w") as f:
-			f.write(firebase_creds.replace('\\"', '"').replace('<NL>', '\n'))
+			json.dump(firebase_creds, f)
 
 def configure_eq_bench():
 	config = configparser.ConfigParser(allow_no_value=True)
