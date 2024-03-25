@@ -1,7 +1,8 @@
 import os
 import json
+import subprocess
 from src.lm_eval import run_lm_eval_benchmarks
-from src.eq_bench import run_eq_bench_benchmarks, configure_eq_bench
+from src.eq_bench import run_eq_bench_benchmarks
 from src.upload import upload_to_github_gist
 
 def main():
@@ -55,6 +56,11 @@ def main():
 	print('--------------------')
 	print('Benchmarks complete!')
 	print('--------------------')
+
+	if os.getenv('DEBUG') == 'False':
+		runpod_pod_id = os.getenv('RUNPOD_POD_ID')
+		if runpod_pod_id:
+			subprocess.run(['runpodctl', 'remove', 'pod', runpod_pod_id], check=True)
 
 if __name__ == "__main__":
 	main()
