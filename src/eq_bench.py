@@ -95,8 +95,8 @@ def run_eq_bench_benchmarks(benchmarks, model_id):
 
 		process.stdout.close()
 		return_code = process.wait()
-		if return_code:
-			raise subprocess.CalledProcessError(return_code, command)
+		#if return_code:
+		#	raise subprocess.CalledProcessError(return_code, command)
 
 	# Parse eq-bench results
 	try:
