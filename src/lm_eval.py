@@ -76,6 +76,6 @@ def run_lm_eval_benchmarks(model_id: str, tasks: List[str], quantization: str, b
 		for file in os.listdir(output_dir):
 			if file.endswith(".jsonl"):
 				with open(os.path.join(output_dir, file), "r") as f:
-					results["lm_eval_samples"].extend([json.loads(line) for line in f])
+					results["lm_eval_samples"].append(json.load(f))
 
 	return results

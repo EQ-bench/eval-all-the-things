@@ -9,7 +9,11 @@ def main():
 	eq_bench_benchmarks_to_run = os.environ.get("EQ_BENCH_BENCHMARKS", "").split(",")
 	eq_bench_benchmarks_to_run = [benchmark for benchmark in eq_bench_benchmarks_to_run if benchmark]
 	
-	lm_eval_tasks = os.environ["LM_EVAL_TASKS"].split(",")
+	lm_eval_tasks = os.environ.get(["LM_EVAL_TASKS"], '')
+	if lm_eval_tasks:
+		lm_eval_tasks = lm_eval_tasks.split(",")
+	else:
+		lm_eval_tasks = []
 	model_id = os.environ["MODEL_PATH"]
 	trust_remote_code = os.environ["TRUST_REMOTE_CODE"] == "True"
 	debug_mode = os.environ["DEBUG"] == "True"
