@@ -21,6 +21,9 @@ def run_lm_eval_benchmarks(model_id: str, tasks: List[str], quantization: str, b
 	"""Run lm-eval benchmarks."""
 	install_lm_eval_dependencies()
 
+	for i,t in enumerate(tasks):
+		tasks[i] = t.strip()
+
 	quant_args = ""
 	if quantization == "4bit":
 		quant_args = ",load_in_4bit=True,bnb_4bit_compute_dtype=float16"
