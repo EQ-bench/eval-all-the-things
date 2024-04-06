@@ -38,6 +38,9 @@ def configure_eq_bench():
 	else:
 		config.set('Oobabooga config', 'automatically_launch_ooba', 'false')
 
+	if os.environ["HF_API_TOKEN"]:
+		config.set('Huggingface', 'access_token', os.environ["HF_API_TOKEN"])
+
 	# Update the configuration based on the provided options
 	#for section, options in eq_bench_options.items():
 	#	for key, value in options.items():
