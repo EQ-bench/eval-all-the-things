@@ -24,18 +24,17 @@ def main():
 	lm_eval_batch_size = os.environ.get("LM_EVAL_BATCH_SIZE", "auto")
 	lm_eval_log_samples = os.environ.get("LM_EVAL_LOG_SAMPLES", "False").lower() == "true"
 	
+	from huggingface_hub import login
+	if hf_api_token:
+		login(token = hf_api_token)
 	
-	#if eq_bench_benchmarks_to_run:
-		#configure_eq_bench(eq_bench_benchmarks_to_run)
-
 	results = {
         "model_id": model_id,
         "lm_eval_results": None,
         "eq_bench_results": None
     }
 	
-	# Run benchmarks	
-
+	# Run benchmarks
 	if any(benchmark in eq_bench_benchmarks_to_run for benchmark in ["eq-bench", "creative-writing", "judgemark"]):
 		results["eq_bench_results"] = run_eq_bench_benchmarks(eq_bench_benchmarks_to_run, model_id)
 		print('EQ-Bench Completed.')
