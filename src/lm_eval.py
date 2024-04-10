@@ -38,7 +38,7 @@ def run_lm_eval_benchmarks(model_id: str, tasks: List[str], quantization: str, b
 		hf_login_cmd = 'huggingface-cli login --token ' + os.environ["HF_API_TOKEN"] + ' && '
 
 	log_samples_arg = "--log_samples" if log_samples else ""
-	command_template = f"{hf_login_cmd}export HF_HUB_ENABLE_HF_TRANSFER=1 && export NUMEXPR_MAX_THREADS=64 && lm_eval --model hf --model_args pretrained={model_id},trust_remote_code={trust_remote_code}{quant_args} --tasks {','.join(tasks)} --device cuda:0 --batch_size {batch_size} --output_path {output_dir}/lm_eval_results.json --use_cache sqlite_cache_{model_id.replace('/', '__')} --verbosity DEBUG {log_samples_arg}"
+	command_template = f"{hf_login_cmd}export HF_HUB_ENABLE_HF_TRANSFER=1 && export NUMEXPR_MAX_THREADS=64 && lm_eval --model hf --model_args pretrained={model_id},trust_remote_code={trust_remote_code}{quant_args} --tasks {','.join(tasks)} --device auto --batch_size {batch_size} --output_path {output_dir}/lm_eval_results.json --use_cache sqlite_cache_{model_id.replace('/', '__')} --verbosity DEBUG {log_samples_arg}"
 
 	def generate_command(current_batch_size):
 		return command_template.replace("{batch_size}", current_batch_size)
