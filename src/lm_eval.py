@@ -24,7 +24,7 @@ def run_lm_eval_benchmarks(model_id: str, tasks: List[str], quantization: str, b
 	for i,t in enumerate(tasks):
 		tasks[i] = t.strip()
 
-	quant_args = ""
+	quant_args = ",dtype=bfloat16"
 	if quantization == "4bit":
 		quant_args = ",load_in_4bit=True,bnb_4bit_compute_dtype=float16"
 	elif quantization == "8bit":
@@ -33,7 +33,7 @@ def run_lm_eval_benchmarks(model_id: str, tasks: List[str], quantization: str, b
 	output_dir = f"output/{model_id.replace('/', '__')}"
 	os.makedirs(output_dir, exist_ok=True)
 
-	hf_login_cmd = ',dtype=bfloat16'
+	hf_login_cmd = ''
 	if os.environ["HF_API_TOKEN"]:
 		hf_login_cmd = 'huggingface-cli login --token ' + os.environ["HF_API_TOKEN"] + ' && '
 
