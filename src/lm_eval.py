@@ -8,7 +8,7 @@ def install_lm_eval_dependencies():
 	commands = [
 		"apt update -y",
 		"apt install nano screen htop -y",
-		"git clone https://github.com/sqrkl/lm-evaluation-harness",
+		"git clone https://github.com/sqrkl/lm-evaluation-harness -b many-shot-testing",
 		"cd lm-evaluation-harness",
 		"pip install -e .",
 		"pip install gekko sentencepiece hf_transfer einops optimum accelerate bitsandbytes tiktoken flash_attn transformers_stream_generator git+https://github.com/huggingface/transformers.git",
