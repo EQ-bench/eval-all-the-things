@@ -12,7 +12,7 @@ def install_lm_eval_dependencies():
   		#"git clone https://github.com/sqrkl/lm-evaluation-harness",
 		"cd lm-evaluation-harness",
 		"pip install -e .",
-		"pip install gekko sentencepiece hf_transfer einops optimum accelerate bitsandbytes tiktoken flash_attn transformers_stream_generator git+https://github.com/huggingface/transformers.git",
+		"pip install gekko sentencepiece hf_transfer einops optimum accelerate bitsandbytes tiktoken flash_attn transformers_stream_generator git+https://github.com/huggingface/transformers.git tokenizers",
 		"export HF_HUB_ENABLE_HF_TRANSFER=1",
 		"export NUMEXPR_MAX_THREADS=64"
 	]	
@@ -34,12 +34,16 @@ def run_lm_eval_benchmarks(model_id: str, tasks: List[str], quantization: str, b
 	output_dir = f"output/{model_id.replace('/', '__')}"
 	os.makedirs(output_dir, exist_ok=True)
 
+	openelm_params = ""
+	if model_id.startswith('apple/OpenELM'):
+		openelm_params = ',add_bos_token=True,tokenizer=NousResearch/Llama-2-7b-hf'
+
 	hf_login_cmd = ''
 	if os.environ["HF_API_TOKEN"]:
 		hf_login_cmd = 'huggingface-cli login --token ' + os.environ["HF_API_TOKEN"] + ' && '
 
 	log_samples_arg = "--log_samples" if log_samples else ""
-	command_template = f"{hf_login_cmd}export HF_HUB_ENABLE_HF_TRANSFER=1 && export NUMEXPR_MAX_THREADS=64 && lm_eval --model hf --model_args pretrained={model_id},device_map=auto,max_length=4096,trust_remote_code={trust_remote_code}{quant_args} --tasks {','.join(tasks)} --device auto --batch_size {batch_size} --output_path {output_dir}/lm_eval_results.json --use_cache sqlite_cache_{model_id.replace('/', '__')} --verbosity DEBUG {log_samples_arg}"
+	command_template = f"{hf_login_cmd}export HF_HUB_ENABLE_HF_TRANSFER=1 && export NUMEXPR_MAX_THREADS=64 && lm_eval --model hf --model_args pretrained={model_id},device_map=auto,max_length=4096,trust_remote_code={trust_remote_code}{openelm_params}{quant_args} --tasks {','.join(tasks)} --device auto --batch_size {batch_size} --output_path {output_dir}/lm_eval_results.json --use_cache sqlite_cache_{model_id.replace('/', '__')} --verbosity DEBUG {log_samples_arg}"
 
 	def generate_command(current_batch_size):
 		return command_template.replace("{batch_size}", current_batch_size)
