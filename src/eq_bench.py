@@ -84,7 +84,7 @@ def run_eq_bench_benchmarks(benchmarks, model_id):
 
 	# Run selected eq-bench benchmarks
 	for benchmark in benchmarks:
-		command = f"python eq-bench.py --benchmarks {benchmark}"
+		command = f"python eq-bench.py -v -f --benchmarks {benchmark}"
 		# Start the subprocess and get its output stream
 		process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True, text=True)
 		
