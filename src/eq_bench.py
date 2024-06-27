@@ -41,6 +41,13 @@ def configure_eq_bench():
 	if os.environ["HF_API_TOKEN"]:
 		config.set('Huggingface', 'access_token', os.environ["HF_API_TOKEN"])
 
+	if os.environ["JUDGE_MODEL_API"]:
+		config.set("Creative Writing Benchmark", "judge_model_api", os.environ["JUDGE_MODEL_API"])
+	if os.environ["JUDGE_MODEL"]:
+		config.set("Creative Writing Benchmark", "judge_model", os.environ["JUDGE_MODEL"])
+	if os.environ["JUDGE_MODEL_API_KEY"]:
+		config.set("Creative Writing Benchmark", "judge_model_api_key", os.environ["JUDGE_MODEL_API_KEY"])
+
 	# Update the configuration based on the provided options
 	#for section, options in eq_bench_options.items():
 	#	for key, value in options.items():
