@@ -12,7 +12,8 @@ def install_lm_eval_dependencies():
   		#"git clone https://github.com/sqrkl/lm-evaluation-harness",
 		"cd lm-evaluation-harness",
 		"pip install -e .",
-		"pip install gekko sentencepiece hf_transfer einops optimum accelerate bitsandbytes tiktoken flash_attn transformers_stream_generator git+https://github.com/huggingface/transformers.git tokenizers",
+		"pip install gekko sentencepiece hf_transfer einops optimum accelerate bitsandbytes tiktoken flash_attn transformers_stream_generator tokenizers",
+		"pip install git+https://github.com/huggingface/transformers.git",
 		"export HF_HUB_ENABLE_HF_TRANSFER=1",
 		"export NUMEXPR_MAX_THREADS=64"
 	]	
