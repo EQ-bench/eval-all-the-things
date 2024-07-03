@@ -2,6 +2,7 @@ import os
 import subprocess
 from typing import List
 import json
+import glob
 
 def install_lm_eval_dependencies():
 	"""Install lm-eval dependencies."""
@@ -46,7 +47,7 @@ def run_lm_eval_benchmarks(model_id: str, tasks: List[str], quantization: str, b
 		hf_login_cmd = 'huggingface-cli login --token ' + os.environ["HF_API_TOKEN"] + ' && '
 
 	log_samples_arg = "--log_samples" if log_samples else ""
-	command_template = f"{hf_login_cmd}export HF_HUB_ENABLE_HF_TRANSFER=1 && export NUMEXPR_MAX_THREADS=64 && lm_eval --model hf --model_args pretrained={model_id},device_map=auto,max_length=4096,trust_remote_code={trust_remote_code}{openelm_params}{quant_args} --tasks {','.join(tasks)} --device auto --batch_size {batch_size} --output_path {output_dir}/lm_eval_results.json --use_cache sqlite_cache_{model_id.replace('/', '__')} --verbosity DEBUG {log_samples_arg}"
+	command_template = f"{hf_login_cmd}export HF_HUB_ENABLE_HF_TRANSFER=1 && export NUMEXPR_MAX_THREADS=64 && lm_eval --model hf --model_args pretrained={model_id},device_map=auto,max_length=4096,trust_remote_code={trust_remote_code}{openelm_params}{quant_args} --tasks {','.join(tasks)} --device auto --batch_size {batch_size} --output_path {output_dir} --use_cache sqlite_cache_{model_id.replace('/', '__')} --verbosity DEBUG {log_samples_arg}"
 
 	def generate_command(current_batch_size):
 		return command_template.replace("{batch_size}", current_batch_size)
@@ -80,11 +81,18 @@ def run_lm_eval_benchmarks(model_id: str, tasks: List[str], quantization: str, b
 		"lm_eval_output": output
 	}
 
-	# Parse the overall results JSON file
-	results_file = os.path.join(output_dir, "lm_eval_results.json")
-	if os.path.exists(results_file):
-		with open(results_file, "r") as f:
-			results["lm_eval_results"] = json.load(f)
+	output_dir = os.path.join("output", model_id.replace('/', '__'))
+
+	# Search for the JSON file with the pattern results_*.json
+	json_pattern = os.path.join(output_dir, "results_*.json")
+	json_files = glob.glob(json_pattern)
+
+	# Load the JSON file if it exists
+
+	results["lm_eval_results"] = []	
+	for json_file in json_files:		
+		with open(json_file, "r") as f:
+			results["lm_eval_results"].append(json.load(f))
 
 	# Parse the sample JSONL files
 	if log_samples:
