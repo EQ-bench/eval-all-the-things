@@ -61,7 +61,10 @@ def run_lm_eval_benchmarks(model_id: str, tasks: List[str], quantization: str, b
 
 	def run_benchmark(current_batch_size):
 		final_command = generate_command(current_batch_size)
-		output = subprocess.check_output(final_command, shell=True, env={"HF_API_TOKEN": hf_api_token}).decode("utf-8")
+		try:
+			output = subprocess.check_output(final_command, shell=True, env={"HF_API_TOKEN": hf_api_token}).decode("utf-8")
+		except Exception as e:
+			return None
 		return output
 
 	#current_batch_size = batch_size
@@ -72,11 +75,13 @@ def run_lm_eval_benchmarks(model_id: str, tasks: List[str], quantization: str, b
 	output = run_benchmark(current_batch_size)
 
 	# Retry logic
+	results_files = None
 	while not get_results_files(full_output_dir):
 		if current_batch_size == '1':
 			break  # Stop if batch size is already at minimum
 		current_batch_size = str(int(current_batch_size) // 2 if current_batch_size.isdigit() else 8)
 		output = run_benchmark(current_batch_size)
+		results_files = get_results_files(full_output_dir)
 
 	# Collate the results
 	results = {
@@ -91,7 +96,9 @@ def run_lm_eval_benchmarks(model_id: str, tasks: List[str], quantization: str, b
 	# Load the JSON file if it exists
 
 	results["lm_eval_results"] = []	
-	for json_file in get_results_files(full_output_dir):		
+	results_files = get_results_files(full_output_dir)
+	for json_file in results_files:	
+		print(json_file)	
 		with open(json_file, "r") as f:
 			results["lm_eval_results"].append(json.load(f))
 
