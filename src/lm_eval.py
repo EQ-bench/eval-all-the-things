@@ -8,7 +8,8 @@ def install_lm_eval_dependencies():
 	commands = [
 		"apt update -y",
 		"apt install nano screen htop -y",
-		"git clone https://github.com/sqrkl/lm-evaluation-harness -b many-shot-testing",
+		"git clone https://github.com/sqrkl/lm-evaluation-harness -b mmlu-pro-irt",
+		#"git clone https://github.com/sqrkl/lm-evaluation-harness -b many-shot-testing",
   		#"git clone https://github.com/sqrkl/lm-evaluation-harness",
 		"cd lm-evaluation-harness",
 		"pip install -e .",
