@@ -21,6 +21,12 @@ def install_lm_eval_dependencies():
 	]	
 	subprocess.run(' && '.join(commands), shell=True, check=True)
 
+def get_results_files(full_output_dir):
+	# Search for the JSON file with the pattern results_*.json
+	json_pattern = os.path.join(full_output_dir, "results_*.json")
+	json_files = glob.glob(json_pattern)
+	return json_files
+
 def run_lm_eval_benchmarks(model_id: str, tasks: List[str], quantization: str, batch_size: str, trust_remote_code: bool, hf_api_token: str, log_samples: bool):
 	"""Run lm-eval benchmarks."""
 	install_lm_eval_dependencies()
@@ -36,6 +42,7 @@ def run_lm_eval_benchmarks(model_id: str, tasks: List[str], quantization: str, b
 
 	#output_dir = f"output/{model_id.replace('/', '__')}"
 	output_dir = 'output'
+	full_output_dir = os.path.join("output", model_id.replace('/', '__'))
 	os.makedirs(output_dir, exist_ok=True)
 
 	openelm_params = ""
@@ -64,10 +71,8 @@ def run_lm_eval_benchmarks(model_id: str, tasks: List[str], quantization: str, b
 	current_batch_size = batch_size if batch_size else 'auto:9'
 	output = run_benchmark(current_batch_size)
 
-	results_files = [f for f in os.listdir(output_dir) if f.endswith("results.json")]
-
 	# Retry logic
-	while not results_files:
+	while not get_results_files(full_output_dir):
 		if current_batch_size == '1':
 			break  # Stop if batch size is already at minimum
 		current_batch_size = str(int(current_batch_size) // 2 if current_batch_size.isdigit() else 8)
@@ -81,24 +86,20 @@ def run_lm_eval_benchmarks(model_id: str, tasks: List[str], quantization: str, b
 		"lm_eval_output": output
 	}
 
-	output_dir = os.path.join("output", model_id.replace('/', '__'))
-
-	# Search for the JSON file with the pattern results_*.json
-	json_pattern = os.path.join(output_dir, "results_*.json")
-	json_files = glob.glob(json_pattern)
+	
 
 	# Load the JSON file if it exists
 
 	results["lm_eval_results"] = []	
-	for json_file in json_files:		
+	for json_file in get_results_files(full_output_dir):		
 		with open(json_file, "r") as f:
 			results["lm_eval_results"].append(json.load(f))
 
 	# Parse the sample JSONL files
 	if log_samples:
-		for file in os.listdir(output_dir):
+		for file in os.listdir(full_output_dir):
 			if file.endswith(".jsonl"):
-				with open(os.path.join(output_dir, file), "r") as f:
+				with open(os.path.join(full_output_dir, file), "r") as f:
 					results["lm_eval_samples"].append(json.load(f))
 
 	return results
