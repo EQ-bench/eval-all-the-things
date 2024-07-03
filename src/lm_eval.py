@@ -33,7 +33,8 @@ def run_lm_eval_benchmarks(model_id: str, tasks: List[str], quantization: str, b
 	elif quantization == "8bit":
 		quant_args = ",load_in_8bit=True"
 
-	output_dir = f"output/{model_id.replace('/', '__')}"
+	#output_dir = f"output/{model_id.replace('/', '__')}"
+	output_dir = 'output'
 	os.makedirs(output_dir, exist_ok=True)
 
 	openelm_params = ""
