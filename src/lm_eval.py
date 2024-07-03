@@ -100,7 +100,8 @@ def run_lm_eval_benchmarks(model_id: str, tasks: List[str], quantization: str, b
 	for json_file in results_files:	
 		print(json_file)	
 		with open(json_file, "r") as f:
-			results["lm_eval_results"].append(json.load(f))
+			res_json = json.load(f)
+			results["lm_eval_results"].append(res_json)
 
 	# Parse the sample JSONL files
 	if log_samples:
