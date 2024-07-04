@@ -61,6 +61,7 @@ def run_lm_eval_benchmarks(model_id: str, tasks: List[str], quantization: str, b
 
 	def run_benchmark(current_batch_size):
 		final_command = generate_command(current_batch_size)
+		print(final_command)
 		try:
 			output = subprocess.check_output(final_command, shell=True, env={"HF_API_TOKEN": hf_api_token}).decode("utf-8")
 		except Exception as e:
